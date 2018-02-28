@@ -27,8 +27,14 @@ describe Oystercard do
  end
 
  describe '#touch_in' do
-   it 'should return journey status' do
+   it 'should return journey status as true' do
      expect(subject.touch_in).to eq true
+   end
+ end
+
+ describe "#touch_out" do
+   it 'should return journey status as false' do
+     expect(subject.touch_out).to eq false
    end
  end
 end
