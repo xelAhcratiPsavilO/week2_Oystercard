@@ -1,4 +1,5 @@
 require "oystercard.rb"
+
 describe Oystercard do
   describe "#balace" do
     it "shows the amount of money that's left on card" do
@@ -21,7 +22,9 @@ describe Oystercard do
 
   describe '#deduct'do
    it 'deduces the fare for journey' do
-     expect{subject.deduct 1 }.to change{ subject.balance }.by -1
+     allow_any_instance_of(Oystercard).to receive(:deduct) do
+       expect{subject.deduct 1 }.to change{ subject.balance }.by -1
+     end
    end
  end
 
