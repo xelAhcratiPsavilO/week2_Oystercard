@@ -13,8 +13,7 @@ describe Oystercard do
     end
 
     it "raises an error when the amount exceeds the limit" do
-      maximum_balance = Oystercard::MAX_BALANCE
-      subject.topup(maximum_balance)
+      subject.topup(Oystercard::MAX_BALANCE)
       message = "You can't top up as it exceeds the limit"
       expect{ subject.topup 1 }.to raise_error message
     end
@@ -28,7 +27,7 @@ describe Oystercard do
 
  describe '#touch_in' do
    it 'should return journey status as true' do
-     subject.topup(1)
+     subject.topup(Oystercard::MIN_FARE)
      expect(subject.touch_in).to eq true
    end
 
