@@ -38,7 +38,13 @@ describe Oystercard do
 
  describe "#touch_out" do
    it 'should return journey status as false' do
-     expect(subject.touch_out).to eq false
+     expect(subject.touch_out).to eq subject.in_journey?
+   end
+
+   it 'should reduce balance by MIN_FARE' do
+     subject.topup(Oystercard::MIN_FARE)
+     subject.touch_in
+     expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
    end
  end
 
