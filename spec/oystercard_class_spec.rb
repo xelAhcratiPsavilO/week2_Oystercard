@@ -13,7 +13,7 @@ describe Oystercard do
     end
 
     it "raises an error when the amount exceeds the limit" do
-      maximum_balance = Oystercard::MAXIMUM_BALANCE
+      maximum_balance = Oystercard::MAX_BALANCE
       subject.topup(maximum_balance)
       message = "You can't top up as it exceeds the limit"
       expect{ subject.topup 1 }.to raise_error message
@@ -28,7 +28,12 @@ describe Oystercard do
 
  describe '#touch_in' do
    it 'should return journey status as true' do
+     subject.topup(1)
      expect(subject.touch_in).to eq true
+   end
+
+   it 'raise error if balance is less than min fare' do
+     expect{ subject.touch_in }.to raise_error "Insufficient funds"
    end
  end
 
@@ -40,6 +45,7 @@ describe Oystercard do
 
  describe '#in_journey' do
    it 'it returns in_journey status' do
+     subject.topup(1)
      subject.touch_in
      expect(subject.in_journey?).to eq true
    end
