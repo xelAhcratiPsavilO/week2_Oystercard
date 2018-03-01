@@ -32,9 +32,9 @@ describe Oystercard do
 
  describe '#touch_in' do
 
-   it 'should return journey status as true' do
+   it 'should return journey status as to equal station' do
      subject.topup(Oystercard::MIN_FARE)
-     expect(subject.touch_in(:station)).to eq true
+     expect(subject.touch_in(:station)).to eq :station
    end
 
    it 'raise error if balance is less than min fare' do
@@ -49,14 +49,22 @@ describe Oystercard do
  end
 
  describe "#touch_out" do
-   it 'should return journey status as false' do
-     expect(subject.touch_out).to eq subject.in_journey?
+
+  before(:each) do
+    subject.topup(Oystercard::MIN_FARE)
+    subject.touch_in(:station)
+  end
+   it 'should return journey status as nil' do
+     expect(subject.touch_out).to eq nil
    end
 
    it 'should reduce balance by MIN_FARE' do
-     subject.topup(Oystercard::MIN_FARE)
-     subject.touch_in(:station)
      expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
+   end
+
+   it 'should set entry_station to nil' do
+     subject.touch_out
+     expect(subject.entry_station).to eq nil
    end
  end
 
