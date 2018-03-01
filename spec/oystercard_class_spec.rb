@@ -1,21 +1,13 @@
 require 'oystercard'
 
 describe Oystercard do
-  let(:station) { double :station }
+  let(:station1) { double :station1 }
+  let(:station2) { double :station2 }
 
   describe "#balace" do
     it "shows the amount of money that's left on card" do
       balance = 0
       expect(subject.balance).to eq balance
-    end
-  end
-
-  describe "#journey_history" do
-    it "stores entry and exit station in a hash" do
-      subject.topup(Oystercard::MIN_FARE)
-      subject.touch_in(:station)
-      subject.touch_out
-      expect(subject.journey_history).to eq []
     end
   end
 
@@ -41,28 +33,25 @@ describe Oystercard do
 
  describe '#touch_in' do
 
-   it 'should return journey status as to equal station' do
-     subject.topup(Oystercard::MIN_FARE)
-     expect(subject.touch_in(:station)).to eq :station
-   end
-
    it 'raise error if balance is less than min fare' do
-     expect{ subject.touch_in(:station) }.to raise_error "Insufficient funds"
+     expect{ subject.touch_in(:station1) }.to raise_error "Insufficient funds"
    end
 
    it 'remembers entry station after touch in' do
      subject.topup(Oystercard::MIN_FARE)
-     subject.touch_in(:station)
-     expect(subject.entry_station).to eq :station
+     subject.touch_in(:station1)
+     expect(subject.entry_station).to eq :station1
    end
+
  end
 
  describe "#touch_out" do
 
   before(:each) do
     subject.topup(Oystercard::MIN_FARE)
-    subject.touch_in(:station)
+    subject.touch_in(:station1)
   end
+
    it 'should return journey status as nil' do
      expect(subject.touch_out).to eq nil
    end
@@ -75,12 +64,22 @@ describe Oystercard do
      subject.touch_out
      expect(subject.entry_station).to eq nil
    end
+
+   it 'keeps track of the exit station' do
+     subject.touch_out(:station2)
+     expect(subject.journey_history).to eq [{entry_station: :station1, exit_station: :station2}]
+   end
+
+   it 'keeps track of the exit station' do
+     expect(subject.touch_out(:station2)).to eq nil
+   end
+
  end
 
  describe '#in_journey' do
    it 'it returns in_journey status' do
      subject.topup(1)
-     subject.touch_in(:station)
+     subject.touch_in(:station1)
      expect(subject.in_journey?).to eq true
    end
  end
