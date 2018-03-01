@@ -1,4 +1,4 @@
-# require 'station'
+require 'station'
 # require 'journey'
 
 class Oystercard
@@ -18,12 +18,12 @@ class Oystercard
     @balance += amount
   end
 
-  def touch_in(station = Station.new)
+  def touch_in(station = Station.new("Aldgate East", 1))
     raise "Insufficient funds" if @balance < MIN_FARE
     @entry_station = station
   end
 
-  def touch_out(station2 = Station.new)
+  def touch_out(station2 = Station.new("Earl's Court",1))
     deduct(MIN_FARE)
     @journey_history << {:entry_station => @entry_station, :exit_station => station2}
     @entry_station = nil

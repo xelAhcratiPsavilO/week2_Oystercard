@@ -1,6 +1,8 @@
 class Station
-  # attr_accessor :journey
-  # # def initialize
-  # #   @journey = []
-  # # end
+
+  def initialize(name, zone)
+    @name = name
+    @zone = zone
+  end
+
 end
