@@ -10,6 +10,15 @@ describe Oystercard do
     end
   end
 
+  describe "#journey_history" do
+    it "stores entry and exit station in a hash" do
+      subject.topup(Oystercard::MIN_FARE)
+      subject.touch_in(:station)
+      subject.touch_out
+      expect(subject.journey_history).to eq []
+    end
+  end
+
   describe "#topup" do
     it "allows user to top up" do
       expect{ subject.topup 1 }.to change{ subject.balance }.by 1
