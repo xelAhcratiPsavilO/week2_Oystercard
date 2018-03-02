@@ -9,11 +9,13 @@ describe Journey do
       expect(journey.entry_station).to eq :fake_station
     end
     it 'does not have an exit station recorded' do
-        expect(journey.exit_station).to eq nil
-      end
+      expect(journey.exit_station).to eq nil
+    end
+
+
   end
 
-  context 'Given an exit station'do
+  context 'Given an exit station' do
     it 'has an exit station recorded' do
       journey.finish(:fake_station)
       expect(journey.exit_station).to eq :fake_station
@@ -23,11 +25,24 @@ describe Journey do
       journey.finish(:fake_station)
       expect(journey.entry_station).to eq nil
     end
-  end
 
-  describe '#finish' do
-    it 'finishes the journey by returning the exit station' do
-      expect(journey.finish(:fake_station)).to eq :fake_station
+    describe '#finish' do
+      it 'finishes the journey by returning the exit station' do
+        expect(journey.finish(:fake_station)).to eq :fake_station
+      end
     end
+
+    describe '#complete?' do
+
+      it 'is an incomplete journey' do
+        expect(journey.complete?).to be false
+      end
+
+      it 'is a complete journey' do
+        journey.finish(:fake_station)
+        expect(journey.complete?).to be true
+      end
+    end
+
   end
 end
